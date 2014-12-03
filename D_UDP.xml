@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-poptart.org:device:UDPNotifier</deviceType>
+    <staticJson>D_UDP.json</staticJson> 
+    <friendlyName>UDP Notifier</friendlyName>
+    <manufacturer>Poptart</manufacturer>
+    <manufacturerURL>http://www.poptart.org</manufacturerURL>
+    <modelDescription>Sends UDP broadcasts to port 1234 as devices change state</modelDescription>
+    <modelName>UDP Notifier</modelName>
+    <modelNumber>1.0</modelNumber>
+    <UDN>uuid:upnp-poptart-1_0-0000000000001</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:poptart.org:service:PCA:1</serviceType>
+        <serviceId>urn:upnp-poptart.org:serviceId:PCA1</serviceId>
+        <SCPDURL>S_UDP.xml</SCPDURL>
+      </service>
+    </serviceList>
+    <eventList>
+    </eventList>
+    <handleChildren>0</handleChildren>
+    <implementationList>
+      <implementationFile>I_UDP.xml</implementationFile>
+    </implementationList>
+  </device>
+</root>

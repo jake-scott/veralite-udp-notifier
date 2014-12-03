@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+<specVersion>
+  <major>1</major>
+  <minor>0</minor>
+</specVersion>
+<serviceStateTable>
+
+  <stateVariable>
+    <name>UDPAddress</name>
+    <sendEventsAttribute>no</sendEventsAttribute>
+    <dataType>string</dataType>
+    <defaultValue></defaultValue>
+    <shortCode>udpAddress</shortCode>
+  </stateVariable>
+
+</serviceStateTable>
+</scpd>

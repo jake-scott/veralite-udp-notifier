@@ -1,0 +1,66 @@
+{
+    "flashicon": "icons\/plugins.swf",
+    "imgIconBody": "",
+    "imgIconDimmable": "",
+    "imgIconTurnable": "",
+    "imgIconMin": "",
+    "imgIconMax": "",
+    "halloIconsDir": "pics\/hallo",
+    "DisplayStatus": {
+    },
+    "doc_url": {
+        "doc_language": 1,
+        "doc_manual": 1,
+        "doc_version": 1,
+        "doc_platform": 0,
+        "doc_page": "devices" 
+    },
+
+
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "UDP Notifier" 
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "type": "info"
+                }
+            ],
+            "Control": [
+             {
+                "ControlType": "label",
+                "Label": {
+                    "lang_tag": "lblMsg",
+                    "text": "Server:" 
+                },
+                "Display": {
+                    "Top": 10,
+                    "Left": 20,
+                    "Width": 200,
+                    "Height": 20 
+                } 
+              },
+              {
+   			"ControlGroup":"1",
+     			"ControlPair":"1",
+     			"ControlHeader":"1",
+                "ControlType": "variable",
+                "Display": {
+                    "Service": "urn:upnp-poptart.org:serviceId:PCA1",
+                    "Variable": "UDPAddress",
+                    "Top": 40,
+                    "Left": 20,
+                    "Width": 500,
+                    "Height": 20 
+                } 
+              }
+          ]
+         }
+    ],
+    "DeviceType": "urn:schemas-poptart.org:device:UDP"
+}

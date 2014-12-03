@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<implementation>
+ 
+  <functions>
+  
+  local socket = require "socket"
+  local udp = socket.try(socket.udp())
+  udp_address = '255.255.255.255'
+  -- udp_address = '10.0.20.10'
+  port = 1234
+  
+  local mappings = {
+    ["urn:upnp-org:serviceId:SwitchPower1"] = {
+        friendly = "Switch Power",
+        variable = "Status",
+        notify_name = "Switch"
+    },
+    ["urn:micasaverde-com:serviceId:SceneController1"] = {
+        friendly = "Scene Controller",
+        variable = "sl_SceneActivated",
+        notify_name = "Scene"
+    },
+    ["urn:upnp-org:serviceId:Dimming1"] = {
+        friendly = "Dimmer",
+        variable = "LoadLevelStatus",
+        notify_name = "Dimmer"
+    },
+    ["urn:micasaverde-com:serviceId:SecuritySensor1"] = {
+        friendly = "Security Sensor",
+        variable = "Tripped",
+        notify_name = "SecuritySensor"
+    }
+   }
+
+
+    function send_udp (lul_device, lul_service, lul_variable, lul_value_old, lul_value_new)
+        local notify_name = mappings[lul_service].notify_name
+
+        local msg = string.format("ZWave:%s:%d:%s:%d", notify_name, lul_device, luup.devices[lul_device].description, lul_value_new)
+
+--        if( lul_value_old == lul_value_new ) then
+--            luup.log (string.format("UDP notifier send_udp(%s/%s/%s/%s/%s) no change, not sending msg[%s]", tostring(lul_device), lul_service, lul_variable, tostring(lul_value_old), tostring(lul_value_new), msg ) )
+--        else
+            luup.log (string.format("UDP notifier send_udp(%s/%s/%s/%s/%s) sending msg[%s]", tostring(lul_device), lul_service, lul_variable, tostring(lul_value_old), tostring(lul_value_new), msg ) )
+              socket.try(udp:sendto(msg, udp_address, port))
+--        end
+      end
+  
+  
+    function start_udpNotifier (lul_device)
+        luup.log ('Initalizing UDP Notifier')
+              
+        assert(udp:setoption("broadcast", true))
+        udp:settimeout (10)                  -- wait 10 seconds
+          
+        socket.try (udp:setsockname ('*', port))
+
+        -- loop over all devices to find devices to monitor
+
+          for k,v in pairs (luup.devices) do
+            local found = 0
+            luup.log( string.format("UDP notifier : Considering device #%s:%s", k, v.description) )
+
+            for serv, servinfo in pairs (mappings) do
+                if luup.device_supports_service(serv, k) then
+                    found = 1
+                    luup.log( string.format("UDP notifier :   -> supports %s (watching variable %s)", mappings[serv].friendly, mappings[serv].variable) )
+                    luup.variable_watch( 'send_udp', serv, mappings[serv].variable, k )
+                else
+                    luup.log( string.format("UDP notifier :   -> does not support %s", mappings[serv].friendly) )
+                end
+            end
+
+            if( found == 0 ) then
+                luup.log( "UDP notifer :   -> No supported services, not notifying" )
+            end
+          end
+
+          luup.log ('UDP Notifier initialized')
+      end
+      
+  </functions>
+
+  <incoming>
+    <lua>
+    
+    </lua>
+  </incoming>
+
+  <startup>start_udpNotifier</startup>
+</implementation>
